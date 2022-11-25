@@ -1,4 +1,4 @@
-package infraestructure
+package env
 
 import (
 	"os"
@@ -11,14 +11,12 @@ import (
 
 // LoadEnv load env variables
 func Env(key string) string {
-	var value string
-	// err := godotenv.Load(RootDir()+"\\.env")
-	err := godotenv.Load(".env")
+	err := godotenv.Load(RootDir()+"\\.env")
+	// err := godotenv.Load(".env")
 	if err != nil {
-		value = ""
+		return ""
 	}
-	value = os.Getenv(key)
-	return value
+	return os.Getenv(key)
 }
 
 func RootDir() string {
