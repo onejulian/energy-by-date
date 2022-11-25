@@ -1,0 +1,1 @@
+Repo para almacenar el proyecto energy-by-date, que proporciona el consumo de energía por fecha.
