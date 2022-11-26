@@ -11,8 +11,8 @@ import (
 
 // LoadEnv load env variables
 func Env(key string) string {
-	err := godotenv.Load(RootDir()+"\\.env")
-	// err := godotenv.Load(".env")
+	// err := godotenv.Load(RootDir()+"\\.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		return ""
 	}
