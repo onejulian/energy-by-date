@@ -11,8 +11,8 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
-	router.GET("/mutant", func(c *gin.Context) {
-		c.String(http.StatusOK, "Welcomen Go!")
+	router.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "Welcomen Go! Try to post a json to /generate-report ;)")
 	})
 	router.POST("/generate-report", view.ReportView)
 

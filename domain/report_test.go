@@ -10,7 +10,7 @@ import (
 func TestReport(t *testing.T) {
 	assert := assert.New(t)
 	report := domain.Report{}
-	report, err := report.GetReport("2022-10-25", "weekly")
+	report, err := report.GetReport("2022-10-25", "monthly")
 	assert.Nil(err)
 	assert.NotNil(report)
 }

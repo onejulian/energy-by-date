@@ -2,6 +2,7 @@ package domain
 
 import (
 	"energyByDate/dao"
+	"errors"
 )
 
 var Db dao.DbQueries
@@ -38,6 +39,8 @@ func (r *Report) GetReport(date, period string) (Report, error) {
 		if err != nil {
 			return reportParsed, err
 		}
+	default:
+		return Report{}, errors.New("period not found")
 	}
 
 	return reportParsed, err

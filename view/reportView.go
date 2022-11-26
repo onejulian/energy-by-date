@@ -17,6 +17,10 @@ func ReportView(c *gin.Context) {
 	}
 	report, err := usecase.GetReportUseCase(req.Date, req.Period)
 	if err != nil {
+		if err.Error() == "period not found" {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
