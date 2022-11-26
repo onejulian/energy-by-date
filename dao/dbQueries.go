@@ -33,13 +33,13 @@ func (db *DbQueries) GetReportDaily(date string) (Report, error) {
 	if err != nil {
 		return report, err
 	}
-	yesterday = yesterday+"%"
+	yesterday = yesterday + "%"
 
 	tomorrow, err := db.GetTomorrow(date)
 	if err != nil {
 		return report, err
 	}
-	tomorrow = tomorrow+"%"
+	tomorrow = tomorrow + "%"
 
 	rows, err := conn.Query("select active_energy, meter_date from report where meter_date between $1 and $2", yesterday, tomorrow)
 	if err != nil {
@@ -63,8 +63,34 @@ func (db *DbQueries) GetReportDaily(date string) (Report, error) {
 }
 
 func (db *DbQueries) GetReportWeekly(date string) (Report, error) {
-	report := Report{}
-	return report, nil
+	var reportWeekly Report
+
+	day, err := db.GetDateMonday(date)
+	if err != nil {
+		return Report{}, err
+	}
+
+	for i := 0; i < 7; i++ {
+		var spent float64
+		var row Row
+		report, err := db.GetReportDaily(day.Format("2006-01-02"))
+		if err != nil {
+			return report, err
+		}
+		for _, row := range report.Rows {
+			valueParsed, err := strconv.ParseFloat(row.Value, 64)
+			if err != nil {
+				return reportWeekly, err
+			}
+			spent = spent + valueParsed
+		}
+		row.Value = strconv.FormatFloat(spent, 'f', 2, 64)
+		row.MeterDate = day.Format("2006-01-02")+" 00:00:00"
+		reportWeekly.Rows = append(reportWeekly.Rows, row)
+		day = day.AddDate(0, 0, 1)
+	}
+
+	return reportWeekly, nil
 }
 
 func (db *DbQueries) GetReportMonthly(date string) (Report, error) {
@@ -74,19 +100,19 @@ func (db *DbQueries) GetReportMonthly(date string) (Report, error) {
 
 func (db *DbQueries) ProccesReportDaily(report Report, date string) (Report, error) {
 	var reportFinal Report
-	
+
 	dateParsed, err := time.Parse("2006-01-02", date)
 	if err != nil {
 		return reportFinal, err
 	}
 	today := dateParsed.Format("2006-01-02")
-	today = today+" 00:00:00"
-	
+	today = today + " 00:00:00"
+
 	todayParsed, err := time.Parse("2006-01-02 15:04:05", today)
 	if err != nil {
 		return reportFinal, err
 	}
-	
+
 	for i := -1; i < 23; i++ {
 		var spent float64
 		row := Row{}
@@ -138,4 +164,24 @@ func (db *DbQueries) GetTomorrow(date string) (string, error) {
 		return "", err
 	}
 	return date, nil
+}
+
+func (db *DbQueries) GetDateMonday(date string) (time.Time, error) {
+	var dateResult time.Time
+
+	dateParsed, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return dateResult, err
+	}
+	date = dateParsed.Format(time.RFC850)
+	for !strings.Contains(date, "Monday") {
+		dateParsed = dateParsed.AddDate(0, 0, -1)
+		date = dateParsed.Format(time.RFC850)
+	}
+	dateResult, err = time.Parse(time.RFC850, date)
+	if err != nil {
+		return dateResult, err
+	}
+
+	return dateResult, nil
 }

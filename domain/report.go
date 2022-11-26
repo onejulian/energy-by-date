@@ -20,6 +20,24 @@ func (r *Report) GetReport(date, period string) (Report, error) {
 		if err != nil {
 			return reportParsed, err
 		}
+	case "weekly":
+		report, err := Db.GetReportWeekly(date)
+		if err != nil {
+			return Report{}, err
+		}
+		reportParsed, err = ParseReport(report)
+		if err != nil {
+			return reportParsed, err
+		}
+	case "monthly":
+		report, err := Db.GetReportMonthly(date)
+		if err != nil {
+			return Report{}, err
+		}
+		reportParsed, err = ParseReport(report)
+		if err != nil {
+			return reportParsed, err
+		}
 	}
 
 	return reportParsed, err
