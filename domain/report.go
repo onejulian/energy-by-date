@@ -7,7 +7,8 @@ import (
 var Db dao.DbQueries
 
 func (r *Report) GetReport(date, period string) (Report, error) {
-	var report Report
+	var reportParsed Report
+	var err error
 
 	switch period {
 	case "daily":
@@ -15,13 +16,13 @@ func (r *Report) GetReport(date, period string) (Report, error) {
 		if err != nil {
 			return Report{}, err
 		}
-		reportParsed, err := ParseReport(report)
+		reportParsed, err = ParseReport(report)
 		if err != nil {
 			return reportParsed, err
 		}
 	}
 
-	return report, nil
+	return reportParsed, err
 }
 
 func ParseReport(report dao.Report) (Report, error) {

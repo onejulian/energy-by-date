@@ -7,9 +7,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTranslate(t *testing.T) {
+func TestTranslateEnToSp(t *testing.T) {
 	assert := assert.New(t)
-	month, err := translatemonth.Translate("January")
+	month, err := translatemonth.TranslateEnToSp("January")
 	assert.Nil(err)
 	assert.Equal("enero", month)
+}
+
+func TestTranslateSpToEn(t *testing.T) {
+	assert := assert.New(t)
+	month, err := translatemonth.TranslateSpToEn("enero")
+	assert.Nil(err)
+	assert.Equal("January", month)
 }
