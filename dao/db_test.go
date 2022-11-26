@@ -14,3 +14,11 @@ func TestDb(t *testing.T) {
 	assert.NotNil(db)
 	defer db.Close()
 }
+
+func TestQueries(t *testing.T) {
+	assert := assert.New(t)
+	dbQueries := dao.DbQueries{}
+	report, err := dbQueries.GetReportDaily("2022-10-25")
+	assert.Nil(err)
+	assert.NotNil(report)
+}
