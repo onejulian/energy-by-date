@@ -24,5 +24,5 @@ func ReportView(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, report)
+	c.JSONP(http.StatusOK, report)
 }

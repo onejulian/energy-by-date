@@ -145,6 +145,8 @@ func (db *DbQueries) ProccesReportDaily(report Report, date string) (Report, err
 		row := Row{}
 		start := todayParsed.Add(time.Hour * time.Duration(i))
 		end := todayParsed.Add(time.Hour * time.Duration(i+1))
+		previousRecord := 0.0
+		cumulativeRecord := 0.0
 		for _, rowReport := range report.Rows {
 			period, err := formatDate.FormatToEn(rowReport.MeterDate)
 			if err != nil {
@@ -153,11 +155,13 @@ func (db *DbQueries) ProccesReportDaily(report Report, date string) (Report, err
 			if period.After(start) && period.Before(end) {
 				value := strings.ReplaceAll(rowReport.Value, ".", "")
 				value = strings.ReplaceAll(value, ",", ".")
-				valueParsed, err := strconv.ParseFloat(value, 64)
+				currentRecord, err := strconv.ParseFloat(value, 64)
 				if err != nil {
 					return reportFinal, err
 				}
-				spent = spent + valueParsed
+				cumulativeRecord = currentRecord - previousRecord
+				previousRecord = currentRecord
+				spent = cumulativeRecord
 			}
 		}
 		row.Value = strconv.FormatFloat(spent, 'f', 2, 64)

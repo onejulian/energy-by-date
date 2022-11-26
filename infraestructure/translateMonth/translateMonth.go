@@ -3,14 +3,14 @@ package translatemonth
 import (
 	"bytes"
 	"encoding/json"
-	"energyByDate/env"
+	"energyByDate/env" // for local
 	"os"
 )
 
 func TranslateEnToSp(month string) (string, error) {
 	translateMonth := TranslateMonth{}
-	months, err := os.ReadFile(env.RootDir()+"/infraestructure/assets/monthsEnToSp.json")
-	// months, err := os.ReadFile("monthsEnToSp.json")
+	months, err := os.ReadFile(env.RootDir()+"/infraestructure/assets/monthsEnToSp.json") // for local
+	// months, err := os.ReadFile("monthsEnToSp.json") // for docker
 	if err != nil {
 		return "", err
 	}
@@ -27,8 +27,8 @@ func TranslateEnToSp(month string) (string, error) {
 
 func TranslateSpToEn(month string) (string, error) {
 	translateMonth := TranslateMonth{}
-	months, err := os.ReadFile(env.RootDir()+"/infraestructure/assets/monthsSpToEn.json")
-	// months, err := os.ReadFile("monthsSpToEn.json")
+	months, err := os.ReadFile(env.RootDir()+"/infraestructure/assets/monthsSpToEn.json") // for local
+	// months, err := os.ReadFile("monthsSpToEn.json") // for docker
 	if err != nil {
 		return "", err
 	}

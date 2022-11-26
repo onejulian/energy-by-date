@@ -1,7 +1,7 @@
 package dao
 
 type Report struct {
-	Rows []Row `json:"rows"`
+	Rows []Row `json:"rows"` 
 }
 
 type Row struct {
