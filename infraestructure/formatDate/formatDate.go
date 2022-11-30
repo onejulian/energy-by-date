@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Format(date string) (string, error) {
+func FormatToSp(date string) (string, error) {
 	dateFormated, err := time.Parse("2006-01-02", date)
 	if err != nil {
 		return "", err

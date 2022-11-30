@@ -19,10 +19,10 @@ func (db *DbQueries) GetConn() (*sql.DB, error) {
 	return conn, nil
 }
 
-func (db *DbQueries) GetReportDaily(date string) (Report, error) {
+func (db *DbQueries) GetDailyReport(date string) (Report, error) {
 	report := Report{}
 	row := Row{}
-	
+
 	conn, err := db.GetConn()
 	if err != nil {
 		return report, err
@@ -54,7 +54,7 @@ func (db *DbQueries) GetReportDaily(date string) (Report, error) {
 		report.Rows = append(report.Rows, row)
 	}
 
-	report, err = db.ProccesReportDaily(report, date)
+	report, err = db.ProcessDailyReport(report, date)
 	if err != nil {
 		return report, err
 	}
@@ -62,10 +62,10 @@ func (db *DbQueries) GetReportDaily(date string) (Report, error) {
 	return report, nil
 }
 
-func (db *DbQueries) GetReportWeekly(date string) (Report, error) {
+func (db *DbQueries) GetWeeklyReport(date string) (Report, error) {
 	var reportWeekly Report
 
-	day, err := db.GetDateMonday(date)
+	day, err := db.GetMondayDate(date)
 	if err != nil {
 		return Report{}, err
 	}
@@ -73,7 +73,7 @@ func (db *DbQueries) GetReportWeekly(date string) (Report, error) {
 	for i := 0; i < 7; i++ {
 		var spent float64
 		var row Row
-		report, err := db.GetReportDaily(day.Format("2006-01-02"))
+		report, err := db.GetDailyReport(day.Format("2006-01-02"))
 		if err != nil {
 			return report, err
 		}
@@ -85,7 +85,7 @@ func (db *DbQueries) GetReportWeekly(date string) (Report, error) {
 			spent = spent + valueParsed
 		}
 		row.Value = strconv.FormatFloat(spent, 'f', 2, 64)
-		row.MeterDate = day.Format("2006-01-02")+" 00:00:00"
+		row.MeterDate = day.Format("2006-01-02") + " 00:00:00"
 		reportWeekly.Rows = append(reportWeekly.Rows, row)
 		day = day.AddDate(0, 0, 1)
 	}
@@ -93,7 +93,7 @@ func (db *DbQueries) GetReportWeekly(date string) (Report, error) {
 	return reportWeekly, nil
 }
 
-func (db *DbQueries) GetReportMonthly(date string) (Report, error) {
+func (db *DbQueries) GetMonthlyReport(date string) (Report, error) {
 	var reportMonthly Report
 
 	day, err := db.GetFirtsDayMonth(date)
@@ -106,7 +106,7 @@ func (db *DbQueries) GetReportMonthly(date string) (Report, error) {
 	for i := 0; i < daysMonth; i++ {
 		var spent float64
 		var row Row
-		report, err := db.GetReportDaily(day.Format("2006-01-02"))
+		report, err := db.GetDailyReport(day.Format("2006-01-02"))
 		if err != nil {
 			return reportMonthly, err
 		}
@@ -118,14 +118,14 @@ func (db *DbQueries) GetReportMonthly(date string) (Report, error) {
 			spent = spent + valueParsed
 		}
 		row.Value = strconv.FormatFloat(spent, 'f', 2, 64)
-		row.MeterDate = day.Format("2006-01-02")+" 00:00:00"
+		row.MeterDate = day.Format("2006-01-02") + " 00:00:00"
 		reportMonthly.Rows = append(reportMonthly.Rows, row)
 		day = day.AddDate(0, 0, 1)
 	}
 	return reportMonthly, nil
 }
 
-func (db *DbQueries) ProccesReportDaily(report Report, date string) (Report, error) {
+func (db *DbQueries) ProcessDailyReport(report Report, date string) (Report, error) {
 	var reportFinal Report
 
 	dateParsed, err := time.Parse("2006-01-02", date)
@@ -180,7 +180,7 @@ func (db *DbQueries) GetYesterday(date string) (string, error) {
 		return "", err
 	}
 	date = dateParsed.AddDate(0, 0, -2).Format("2006-01-02")
-	date, err = formatDate.Format(date)
+	date, err = formatDate.FormatToSp(date)
 	if err != nil {
 		return "", err
 	}
@@ -193,7 +193,7 @@ func (db *DbQueries) GetTomorrow(date string) (string, error) {
 		return "", err
 	}
 	date = dateParsed.AddDate(0, 0, 1).Format("2006-01-02")
-	date, err = formatDate.Format(date)
+	date, err = formatDate.FormatToSp(date)
 	if err != nil {
 		return "", err
 	}
@@ -206,14 +206,14 @@ func (db *DbQueries) GetToday(date string) (string, error) {
 		return "", err
 	}
 	date = dateParsed.Format("2006-01-02")
-	date, err = formatDate.Format(date)
+	date, err = formatDate.FormatToSp(date)
 	if err != nil {
 		return "", err
 	}
 	return date, nil
 }
 
-func (db *DbQueries) GetDateMonday(date string) (time.Time, error) {
+func (db *DbQueries) GetMondayDate(date string) (time.Time, error) {
 	var dateResult time.Time
 
 	dateParsed, err := time.Parse("2006-01-02", date)
@@ -238,7 +238,7 @@ func (db *DbQueries) GetFirtsDayMonth(date string) (time.Time, error) {
 
 	dateSplited := strings.Split(date, "-")
 	day := dateSplited[2]
-	
+
 	date = strings.ReplaceAll(date, day, "01")
 	firstDayMonth, err := time.Parse("2006-01-02", date)
 	if err != nil {

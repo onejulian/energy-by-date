@@ -13,7 +13,7 @@ func (r *Report) GetReport(date, period string) (Report, error) {
 
 	switch period {
 	case "daily":
-		report, err := Db.GetReportDaily(date)
+		report, err := Db.GetDailyReport(date)
 		if err != nil {
 			return Report{}, err
 		}
@@ -22,7 +22,7 @@ func (r *Report) GetReport(date, period string) (Report, error) {
 			return reportParsed, err
 		}
 	case "weekly":
-		report, err := Db.GetReportWeekly(date)
+		report, err := Db.GetWeeklyReport(date)
 		if err != nil {
 			return Report{}, err
 		}
@@ -31,7 +31,7 @@ func (r *Report) GetReport(date, period string) (Report, error) {
 			return reportParsed, err
 		}
 	case "monthly":
-		report, err := Db.GetReportMonthly(date)
+		report, err := Db.GetMonthlyReport(date)
 		if err != nil {
 			return Report{}, err
 		}

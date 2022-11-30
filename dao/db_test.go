@@ -18,7 +18,7 @@ func TestDb(t *testing.T) {
 func TestQueries(t *testing.T) {
 	assert := assert.New(t)
 	dbQueries := dao.DbQueries{}
-	report, err := dbQueries.GetReportDaily("2022-10-25")
+	report, err := dbQueries.GetDailyReport("2022-10-25")
 	assert.Nil(err)
 	assert.NotNil(report)
 }
