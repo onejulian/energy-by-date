@@ -35,8 +35,6 @@ curl -X POST http://localhost:8186/generate-report -H 'Content-Type: application
 
 La configuración de Docker permite compilar y ejecutar el proyecto en un contenedor, así como también ser desplegado en la nube. Es necesario instalar y ejecutar Docker. https://docs.docker.com/desktop/
 
--> En los archivos infraestructure/translateMonth/translateMonth.go y env/env.go es necesario comentar las líneas marcadas al final con '// for local' y descomentar las líneas marcadas al final con '// for docker'; eso con el fin de que la imagen generada pueda leer archivos de configuración.
-
 -> abrir una terminal posicionada en la raíz del proyecto y ejecutar los siguientes comandos:
 ```bash
 docker build -t energy-by-date .
