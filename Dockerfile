@@ -12,7 +12,7 @@ RUN apk --no-cache add ca-certificates
 RUN apk --no-cache add tzdata
 
 COPY .env /app/
-COPY /infraestructure/assets/ /app/
+COPY /infraestructure/assets/ /app/infraestructure/assets/
 COPY --from=builder /app/main .
 
 EXPOSE 8186

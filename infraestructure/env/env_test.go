@@ -1,7 +1,7 @@
 package env_test
 
 import (
-	"energyByDate/env"
+	"energyByDate/infraestructure/env"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

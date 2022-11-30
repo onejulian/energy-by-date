@@ -2,7 +2,7 @@ package dao
 
 import (
 	"database/sql"
-	"energyByDate/env"
+	"energyByDate/infraestructure/env"
 	"fmt"
 	"strconv"
 
