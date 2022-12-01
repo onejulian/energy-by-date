@@ -35,16 +35,15 @@ curl -X POST http://localhost:8186/generate-report -H 'Content-Type: application
 
 La configuración de Docker permite compilar y ejecutar el proyecto en un contenedor, así como también ser desplegado en la nube. Es necesario instalar y ejecutar Docker. https://docs.docker.com/desktop/
 
--> abrir una terminal posicionada en la raíz del proyecto y ejecutar los siguientes comandos:
+-> abrir una terminal (bash) posicionada en la raíz del proyecto y ejecutar los siguientes comandos:
 ```bash
 docker build -t energy-by-date .
 ```
 
 ```bash
-docker run -p 8186:8186 energy-by-date
+docker run -d -p 8186:8186 energy-by-date
 ```
 
--> En otra terminal (bash) ejecutar:
 ```bash
 curl -X POST http://localhost:8186/generate-report -H 'Content-Type: application/json' -d '{"date": "2022-10-25","period": "daily"}'
 ```
@@ -58,6 +57,7 @@ curl -X POST http://localhost:8186/generate-report -H 'Content-Type: application
 ```
 
 # Despliegues
+
 ## Azure
 https://energy-by-date.salmonisland-c75248cf.eastus.azurecontainerapps.io/
 
@@ -72,4 +72,36 @@ curl -X POST https://energy-by-date.salmonisland-c75248cf.eastus.azurecontainera
 
 ```bash
 curl -X POST https://energy-by-date.salmonisland-c75248cf.eastus.azurecontainerapps.io/generate-report -H 'Content-Type: application/json' -d '{"date":"2022-10-25","period":"monthly"}'
+```
+
+## AWS EC2
+http://ec2-44-204-15-49.compute-1.amazonaws.com/
+
+Puede probarlo abriendo una terminal (bash) y ejecutando cualquiera de los siguientes comandos:
+```bash
+curl -X POST http://ec2-44-204-15-49.compute-1.amazonaws.com/generate-report -H 'Content-Type: application/json' -d '{"date":"2022-10-25","period":"daily"}'
+```
+    
+```bash
+curl -X POST http://ec2-44-204-15-49.compute-1.amazonaws.com/generate-report -H 'Content-Type: application/json' -d '{"date":"2022-10-25","period":"weekly"}'
+```
+
+```bash
+curl -X POST http://ec2-44-204-15-49.compute-1.amazonaws.com/generate-report -H 'Content-Type: application/json' -d '{"date":"2022-10-25","period":"monthly"}'
+```
+
+## Google Cloud 
+https://energy-z52mtgqafq-uc.a.run.app/
+
+Puede probarlo abriendo una terminal (bash) y ejecutando cualquiera de los siguientes comandos:
+```bash
+curl -X POST https://energy-z52mtgqafq-uc.a.run.app/generate-report -H 'Content-Type: application/json' -d '{"date":"2022-10-25","period":"daily"}'
+```
+    
+```bash
+curl -X POST https://energy-z52mtgqafq-uc.a.run.app/generate-report -H 'Content-Type: application/json' -d '{"date":"2022-10-25","period":"weekly"}'
+```
+
+```bash
+curl -X POST https://energy-z52mtgqafq-uc.a.run.app/generate-report -H 'Content-Type: application/json' -d '{"date":"2022-10-25","period":"monthly"}'
 ```
